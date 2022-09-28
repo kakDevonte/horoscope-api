@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/favicon.ico" rel="icon" type="image/x-icon">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/mdb.min.css" rel="stylesheet">
+  <link href="/css/jquery-ui.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <title>Админка | Гороскоп</title>
+</head>
+<body>
+  <div class="container">
+
+    <%- include('navbar'); -%>
+
+    <h1>Новый гороскоп</h1>
+
+    <form method="POST" onsubmit="return confirmSubmit();">
+
+      <div class="user-input">
+				<label for="date">Дата гороскопа: </label><input id="date" class="users-inputs datepicker" data-provide="datepicker" name="date" type="text" value="<%= date %>" required />
+			</div>
+
+      <h3 class="mt-5">Овен</h3>
+      <textarea class="horoscope" name="aries"></textarea>
+
+      <h3 class="mt-5">Телец</h3>
+      <textarea class="horoscope" name="taurus"></textarea>
+
+      <h3 class="mt-5">Близнецы</h3>
+      <textarea class="horoscope" name="gemini"></textarea>
+
+      <h3 class="mt-5">Рак</h3>
+      <textarea class="horoscope" name="cancer"></textarea>
+
+      <h3 class="mt-5">Лев</h3>
+      <textarea class="horoscope" name="leo"></textarea>
+
+      <h3 class="mt-5">Дева</h3>
+      <textarea class="horoscope" name="virgo"></textarea>
+
+      <h3 class="mt-5">Весы</h3>
+      <textarea class="horoscope" name="libra"></textarea>
+
+      <h3 class="mt-5">Скорпион</h3>
+      <textarea class="horoscope" name="scorpio"></textarea>
+
+      <h3 class="mt-5">Стрелец</h3>
+      <textarea class="horoscope" name="sagittarius"></textarea>
+
+      <h3 class="mt-5">Козерог</h3>
+      <textarea class="horoscope" name="capricorn"></textarea>
+
+      <h3 class="mt-5">Водолей</h3>
+      <textarea class="horoscope" name="aquarius"></textarea>
+
+      <h3 class="mt-5">Рыбы</h3>
+      <textarea class="horoscope" name="pisces"></textarea>
+
+      <h3 class="mt-5">Змееносец</h3>
+      <textarea class="horoscope" name="ophiuchus"></textarea>
+
+      <button type="submit" class="mt-4 mb-5 btn btn-black">Добавить</button>
+
+    </form>
+
+  </div>
+  <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/mdb.min.js"></script>
+  <script type="text/javascript">
+    function confirmSubmit() {
+
+      let date = document.querySelector('#date');
+      date = date.value;
+      let check = true;
+      let arr = date.split(".");
+
+      if (arr[0].length !== 4) check = false;
+
+      if (arr[1] === undefined) check = false;
+      else {
+        if ((arr[1].length !== 1 && arr[1].length !== 2) || arr[1] > 12) check = false;
+      }
+      
+      if (arr[2] === undefined) check = false;
+      else {
+        if ((arr[2].length !== 1 && arr[2].length !== 2) || arr[2] > 31) check = false;
+      }
+
+      if (check) {
+
+        let answer = confirm("В случае имеющегося гороскопа на эту дату произойдет замена. Добавить гороскоп на " + date + " ?");
+
+        if (answer) return true;
+        else return false;
+
+      } else {
+
+        alert('Введите корректную дату!');
+        return false;
+
+      }
+
+    }
+
+    $(document).ready(() => {
+	
+      $(".datepicker").datepicker({
+        dateFormat:'yy.mm.dd',
+        showOn: "button",
+        buttonImage: "/img/calendar.png",
+        local: 'ru',
+        monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+        dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
+      });
+      
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/favicon.ico" rel="icon" type="image/x-icon">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/mdb.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <title>Админка | Гороскоп</title>
+</head>
+<body>
+  <div class="container mb-5">
+
+    <%- include('navbar'); -%>
+
+    <h1>Список гороскопов</h1>
+
+    <% if (status === 1) { %>
+      <h2 id="success" class="text-success">Гороскоп на <%= date %> добавлен!</h2>
+    <% } else if (status === 2) { %>
+      <h2 id="success" class="text-success">Гороскоп на <%= date %> обновлен!</h2>
+    <% } %>
+
+    <a href="/new" class="mt-4 mb-5 btn btn-black">Добавить гороскоп</a>
+
+    <% horoscopes.forEach(horoscope => {
+      let date = horoscope.date;
+
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      date = year + '.' + month + '.' + day;
+
+      switch (month) {
+        case 1: month = 'Января'; break;
+        case 2: month = 'Февраля'; break;
+        case 3: month = 'Марта'; break;
+        case 4: month = 'Апреля'; break;
+        case 5: month = 'Мая'; break;
+        case 6: month = 'Июня'; break;
+        case 7: month = 'Июля'; break;
+        case 8: month = 'Августа'; break;
+        case 9: month = 'Сентября'; break;
+        case 10: month = 'Октября'; break;
+        case 11: month = 'Ноября'; break;
+        case 12: month = 'Декабря'; break;
+        default: break;
+      }
+      let name = day + ' ' + month + ' ' + year + ' года';
+
+    %>
+      <h2><a href="/edit/<%= date %>"><%= name %></a></h2>
+    <% }); %>
+
+  </div>
+  <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/mdb.min.js"></script>
+  <script>
+    setTimeout(() => {
+      $('#success').fadeOut();
+    }, 3000);
+  </script>
+</body>
+</html>

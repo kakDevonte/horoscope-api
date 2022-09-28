@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/favicon.ico" rel="icon" type="image/x-icon">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/mdb.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <title>Админка | Гороскоп</title>
+</head>
+<body>
+  <div class="container mb-5">
+
+    <%- include('navbar'); -%>
+    <%
+      let date = horoscope.date;
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      date = year + '.' + month + '.' + day;
+    %>
+    <h1>Гороскоп на <%= date %>
+      <% if (success) { %>
+        <span id="success" class="text-success">обновлен!</span>
+      <% } %>
+    </h1>
+
+    <form method="POST">
+
+      <div class="user-input">
+        <label for="date">Дата гороскопа: </label><input id="date" class="users-inputs" type="text" value="<%= date %>" disabled />
+        <input type="hidden" name="date" value="<%= date %>" />
+			</div>
+
+      <button type="submit" class="mt-4 btn btn-black">Изменить</button>
+
+      <h3 class="mt-5">Овен</h3>
+      <textarea class="horoscope" name="aries"><%= horoscope.aries %></textarea>
+
+      <h3 class="mt-5">Телец</h3>
+      <textarea class="horoscope" name="taurus"><%= horoscope.taurus %></textarea>
+
+      <h3 class="mt-5">Близнецы</h3>
+      <textarea class="horoscope" name="gemini"><%= horoscope.gemini %></textarea>
+
+      <h3 class="mt-5">Рак</h3>
+      <textarea class="horoscope" name="cancer"><%= horoscope.cancer %></textarea>
+
+      <h3 class="mt-5">Лев</h3>
+      <textarea class="horoscope" name="leo"><%= horoscope.leo %></textarea>
+
+      <h3 class="mt-5">Дева</h3>
+      <textarea class="horoscope" name="virgo"><%= horoscope.virgo %></textarea>
+
+      <h3 class="mt-5">Весы</h3>
+      <textarea class="horoscope" name="libra"><%= horoscope.libra %></textarea>
+
+      <h3 class="mt-5">Скорпион</h3>
+      <textarea class="horoscope" name="scorpio"><%= horoscope.scorpio %></textarea>
+
+      <h3 class="mt-5">Стрелец</h3>
+      <textarea class="horoscope" name="sagittarius"><%= horoscope.sagittarius %></textarea>
+
+      <h3 class="mt-5">Козерог</h3>
+      <textarea class="horoscope" name="capricorn"><%= horoscope.capricorn %></textarea>
+
+      <h3 class="mt-5">Водолей</h3>
+      <textarea class="horoscope" name="aquarius"><%= horoscope.aquarius %></textarea>
+
+      <h3 class="mt-5">Рыбы</h3>
+      <textarea class="horoscope" name="pisces"><%= horoscope.pisces %></textarea>
+      
+      <h3 class="mt-5">Змееносец</h3>
+      <textarea class="horoscope" name="ophiuchus"><%= horoscope.ophiuchus %></textarea>
+
+      <button type="submit" class="mt-4 mb-5 btn btn-black">Изменить</button>
+
+    </form>
+
+  </div>
+  <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/mdb.min.js"></script>
+  <script>
+    setTimeout(() => {
+      $('#success').fadeOut();
+    }, 3000);
+  </script>
+</body>
+</html>
