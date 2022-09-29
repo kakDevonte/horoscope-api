@@ -25,6 +25,18 @@ const schema = new Schema({
     type: Boolean,
     require: true
   },
+  dateOfGetStars: {
+    type: String,
+    require: true
+  },
+  countOfAdsPerDay: {
+    type: Number,
+    require: true
+  },
+  dateOfShowAds: {
+    type: String,
+    require: true
+  }
 });
 
 schema.set('toJSON', {

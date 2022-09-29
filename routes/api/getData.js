@@ -9,6 +9,9 @@ module.exports = (app, mongo) => {
     let days = 0;
     let isGetTodayDay = false;
     let isFullPredict = false;
+    let dateOfGetStars = '';
+    let countOfAdsPerDay = 0;
+    let dateOfShowAds = 0;
 
     if (req.body.id !== null) {
 
@@ -21,12 +24,19 @@ module.exports = (app, mongo) => {
           days = user.day;
           isGetTodayDay = user.isGetTodayDay;
           isFullPredict = user.isFullPredict;
+          dateOfGetStars = user.dateOfGetStars;
+          countOfAdsPerDay = user.countOfAdsPerDay;
+          dateOfShowAds = user.dateOfShowAds;
+
         } else newcomer = true;
 
     } else newcomer = true
 
     if (newcomer) {
-      let user = await mongo.users.create({ id: req.body.id, sign: '', stars: 0, day: 0, isGetTodayDay: false, isFullPredict: false }).then(user => user);
+      let user = await mongo.users.create({
+        id: req.body.id, sign: '', stars: 0, day: 0,
+        isGetTodayDay: false, isFullPredict: false, dateOfGetStars: "",
+        countOfAdsPerDay: 0, dateOfShowAds: ""}).then(user => user);
       id = user.id;
     }
 
@@ -100,7 +110,10 @@ module.exports = (app, mongo) => {
       tomorrow: tomorrow,
       timestamp: timestamp,
       isGetTodayDay: isGetTodayDay,
-      isFullPredict: isFullPredict
+      isFullPredict: isFullPredict,
+      dateOfGetStars: dateOfGetStars,
+      countOfAdsPerDay: countOfAdsPerDay,
+      dateOfShowAds: dateOfShowAds
     });
 
     console.log({
