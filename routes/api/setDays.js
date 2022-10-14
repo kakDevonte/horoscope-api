@@ -6,14 +6,10 @@ module.exports = (app, mongo) => {
 
         console.log(req.body)
         if (req.body.id !== null) {
-
-            let user = await mongo.users.findOne({ id: req.body.id }).then(user => user);
-
-            if (user !== null) {
-                if(req.body.day >= 5) {
+                if(req.body.day > 5) {
                     mongo.users.updateOne({ id: req.body.id }, { $set: {
                             day: 0,
-                            stars: user.stars + 5,
+                            stars: req.body.stars + 5,
                             isGetTodayDay: true
                         } }).then(() => null);
                 } else {
@@ -25,8 +21,8 @@ module.exports = (app, mongo) => {
                 success = true;
 
             }
-        }
-        res.json({ success: success });
+        const user = await mongo.users.findOne({ id: req.body.id });
+        res.json(user);
     });
 
 }

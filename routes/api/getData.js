@@ -4,7 +4,7 @@ module.exports = (app, mongo) => {
 
     let id;
     let newcomer = false;
-    let sign = '';
+    let sign = 0;
     let stars = 0;
     let days = 0;
     let isGetTodayDay = false;
@@ -34,7 +34,7 @@ module.exports = (app, mongo) => {
 
     if (newcomer) {
       let user = await mongo.users.create({
-        id: req.body.id, sign: '', stars: 0, day: 0,
+        id: req.body.id, sign: 0, stars: 0, day: 0,
         isGetTodayDay: false, isFullPredict: false, dateOfGetStars: "",
         countOfAdsPerDay: 0, dateOfShowAds: ""}).then(user => user);
       id = user.id;
@@ -115,17 +115,5 @@ module.exports = (app, mongo) => {
       countOfAdsPerDay: countOfAdsPerDay,
       dateOfShowAds: dateOfShowAds
     });
-
-    console.log({
-      id: id,
-      stars: stars,
-      days: days,
-      newcomer: newcomer,
-      sign: sign,
-      // today: today,
-      // tomorrow: tomorrow,
-      timestamp: timestamp,
-      isGetTodayDay: isGetTodayDay
-    })
   });
 }

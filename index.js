@@ -34,6 +34,6 @@ mongoose().then(async () => {
   proccess.exit(1);
 });
 
-cron.schedule('0 1 * * *', function() {
+cron.schedule('30 * * * * *', function() {
   mongo.users.updateMany({}, {$set: { isGetTodayDay: false, isFullPredict: false, countOfAdsPerDay: 0 }},{ multi: true }).then(() => null);
 });

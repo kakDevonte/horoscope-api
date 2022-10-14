@@ -6,7 +6,7 @@ const schema = new Schema({
     require: true
   },
   sign: {
-    type: String,
+    type: Number,
     require: true
   },
   stars: {
