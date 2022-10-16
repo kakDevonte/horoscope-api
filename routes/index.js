@@ -8,6 +8,7 @@ module.exports = (app, mongo) => {
   require('./api/setFullPredict')(app, mongo);
   require('./api/addPushNotice')(app, mongo);
   require('./api/setDateOfGetStars')(app, mongo);
+  require('./api/setAdsData')(app, mongo);
 
   require('./admin/home')(app, mongo);
   require('./admin/auth')(app, mongo);
