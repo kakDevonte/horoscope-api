@@ -1,9 +1,19 @@
 const schedule = require("node-schedule");
 const easyvk = require('easyvk');
+const verifyLaunchParams = require("../../functions/verifyLaunchParams");
 require('dotenv').config();
 
 module.exports = (app, mongo) => {
     app.post('/api/addPushNotice', async (req, res) => {
+        const verifyLaunchParams = require('../../functions/verifyLaunchParams');
+        let auth;
+        if(req.headers.authorization){
+            auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+        }
+        if(!auth) {
+            res.status(401).send({ error: "not authorized :(" });
+            return;
+        }
         let success = false;
         if (req.body.id !== null) {
             let now = new Date();

@@ -1,6 +1,16 @@
-module.exports = (app, mongo) => {
+// const verifyLaunchParams = require('../../functions/verifyLaunchParams');
 
+module.exports = (app, mongo) => {
   app.post('/api/getData', async (req, res) => {
+    const verifyLaunchParams = require('../../functions/verifyLaunchParams');
+    let auth;
+    if(req.headers.authorization){
+      auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+    }
+    if(!auth) {
+      res.status(401).send({ error: "not authorized :(" });
+      return;
+    }
 
     let id;
     let newcomer = false;
@@ -13,6 +23,7 @@ module.exports = (app, mongo) => {
     let countOfAdsPerDay = 0;
     let dateOfShowAds = 0;
 
+    // if (req.)
     if (req.body.id !== null) {
 
         let user = await mongo.users.findOne({ id: req.body.id }).then(user => user);

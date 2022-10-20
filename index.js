@@ -25,8 +25,8 @@ const fs = require("fs");
 mongoose().then(async () => {
   await require('./functions/migrations')(mongo);
   // app.listen(process.env.PORT);
-  app.listen(4000, () => {
-    console.log(`Server running on port ${'4000'}`);
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running on port ${process.env.PORT}`);
   });
   require('./routes')(app, mongo);
 }).catch(() => {
@@ -34,7 +34,7 @@ mongoose().then(async () => {
   proccess.exit(1);
 });
 
-cron.schedule('30 * * * * *', function() {
+cron.schedule('* 21 * * *', function() {
   mongo.users.updateMany({}, {$set: { isGetTodayDay: false, isFullPredict: false, countOfAdsPerDay: 0,
       dateOfShowAds: '' }},{ multi: true }).then(() => null);
 });
