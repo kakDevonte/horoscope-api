@@ -39,7 +39,8 @@ module.exports = (app, mongo) => {
 
     const login = req.body.login;
     const pass = req.body.pass;
-    
+
+
     mongo.settings.findOne({
       login: login,
       pass: pass

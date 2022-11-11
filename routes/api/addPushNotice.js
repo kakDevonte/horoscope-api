@@ -17,8 +17,8 @@ module.exports = (app, mongo) => {
         let success = false;
         if (req.body.id !== null) {
             let now = new Date();
-            // let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 25, 0, 0, 0);
-            let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds() + 15, 0);            console.log(date);
+            let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 0, 0, 0);
+            //let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds() + 15, 0);            console.log(date);
             const j = schedule.scheduleJob(date, function(){
                 easyvk({
                     token: process.env.TOKEN

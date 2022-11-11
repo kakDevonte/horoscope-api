@@ -4,12 +4,12 @@ const schema = new Schema({
   login: {
     type: String,
     require: true,
-    default: 'admin'
+    default: 'irsAdmin'
   },
   pass: {
     type: String,
     require: true,
-    default: 'admin'
+    default: 'newPassIrs321'
   },
   hash: {
     type: String,
