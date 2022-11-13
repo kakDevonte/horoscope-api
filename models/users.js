@@ -22,11 +22,7 @@ const schema = new Schema({
     require: true
   },
   isFullPredict: {
-    type: Boolean,
-    require: true
-  },
-  dateOfGetStars: {
-    type: String,
+    type: Array,
     require: true
   },
   countOfAdsPerDay: {
@@ -35,6 +31,10 @@ const schema = new Schema({
   },
   dateOfShowAds: {
     type: String,
+    require: true
+  },
+  isClickedOnRemindMe: {
+    type: Boolean,
     require: true
   }
 });

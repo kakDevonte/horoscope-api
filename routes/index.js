@@ -1,6 +1,5 @@
 module.exports = (app, mongo) => {
 
-  require('./api/addPushToken')(app, mongo);
   require('./api/getData')(app, mongo);
   require('./api/setSign')(app, mongo);
   require('./api/setDays')(app, mongo);

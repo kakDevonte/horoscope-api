@@ -1,32 +1,35 @@
 // const verifyLaunchParams = require('../../functions/verifyLaunchParams');
+const qs = require('qs');
 
 module.exports = (app, mongo) => {
-  app.post('/api/getData', async (req, res) => {
+  app.get('/api/getData', async (req, res) => {
     const verifyLaunchParams = require('../../functions/verifyLaunchParams');
     let auth;
-    if(req.headers.authorization){
-      auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
-    }
-    if(!auth) {
-      res.status(401).send({ error: "not authorized :(" });
-      return;
-    }
 
+    // if(req.headers.authorization){
+    //   auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+    // }
+    // if(!auth) {
+    //   res.status(401).send({ error: "not authorized :(" });
+    //   return;
+    // }
+    const header = qs.parse(req.headers.authorization);
+    const userId = header.vk_user_id;
     let id;
     let newcomer = false;
     let sign = 0;
     let stars = 0;
     let days = 0;
     let isGetTodayDay = false;
-    let isFullPredict = false;
+    let isFullPredict = [ false, false, false, false, false, false, false, false, false, false, false, false ];
+    let isClickedOnRemindMe = false;
     let dateOfGetStars = '';
     let countOfAdsPerDay = 0;
     let dateOfShowAds = 0;
 
-    // if (req.)
-    if (req.body.id !== null) {
+    if (userId !== null) {
 
-        let user = await mongo.users.findOne({ id: req.body.id }).then(user => user);
+        let user = await mongo.users.findOne({ id: userId }).then(user => user);
 
         if (user !== null) {
           id = user.id;
@@ -35,6 +38,7 @@ module.exports = (app, mongo) => {
           days = user.day;
           isGetTodayDay = user.isGetTodayDay;
           isFullPredict = user.isFullPredict;
+          isClickedOnRemindMe = user.isClickedOnRemindMe;
           dateOfGetStars = user.dateOfGetStars;
           countOfAdsPerDay = user.countOfAdsPerDay;
           dateOfShowAds = user.dateOfShowAds;
@@ -45,9 +49,11 @@ module.exports = (app, mongo) => {
 
     if (newcomer) {
       let user = await mongo.users.create({
-        id: req.body.id, sign: 0, stars: 0, day: 0,
-        isGetTodayDay: false, isFullPredict: false, dateOfGetStars: "",
-        countOfAdsPerDay: 0, dateOfShowAds: ""}).then(user => user);
+        id: userId, sign: 0, stars: 0, day: 0,
+        isGetTodayDay: false,
+        isFullPredict: [ false, false, false, false, false, false, false, false, false, false, false, false],
+        dateOfGetStars: "",
+        countOfAdsPerDay: 0, dateOfShowAds: "", isClickedOnRemindMe: false}).then(user => user);
       id = user.id;
     }
 
@@ -90,7 +96,6 @@ module.exports = (app, mongo) => {
       }
 
     }
-
     if (tomorrow === null) {
 
       tomorrow = {

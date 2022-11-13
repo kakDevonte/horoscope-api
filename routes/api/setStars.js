@@ -1,24 +1,28 @@
 const verifyLaunchParams = require("../../functions/verifyLaunchParams");
+const qs = require('qs');
+
 module.exports = (app, mongo) => {
-    app.post('/api/setStars', async (req, res) => {
+    app.get('/api/setStars', async (req, res) => {
 
         const verifyLaunchParams = require('../../functions/verifyLaunchParams');
         let auth;
-        if(req.headers.authorization){
-            auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
-        }
-        if(!auth) {
-            res.status(401).send({ error: "not authorized :(" });
-            return;
-        }
+        // if(req.headers.authorization){
+        //     auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+        // }
+        // if(!auth) {
+        //     res.status(401).send({ error: "not authorized :(" });
+        //     return;
+        // }
 
-        if (req.body.id !== null) {
-                mongo.users.updateOne({ id: req.body.id }, { $set: {
-                        stars: req.body.stars
-                    } }).then(() => null);
-            }
-        let user = await mongo.users.findOne({ id: req.body.id }).then(user => user);
-        res.json(user);
+        const header = qs.parse(req.headers.authorization);
+        const userId = header.vk_user_id;
+
+        if (userId !== null) {
+            const oldUser = await mongo.users.findOne({ id: userId });
+            const newUser = await mongo.users.findOneAndUpdate(userId, {$set:{stars: oldUser.stars + 2}},
+                {new: true});
+            res.json(newUser);
+        }
     });
 
 }

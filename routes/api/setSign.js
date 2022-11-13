@@ -1,29 +1,40 @@
 const verifyLaunchParams = require("../../functions/verifyLaunchParams");
+const qs = require('qs');
+
+function isNumeric(value) {
+  return /^\d+$/.test(value);
+}
+
 module.exports = (app, mongo) => {
-
-  app.post('/api/setSign', async (req, res) => {
-
+  app.get('/api/setSign/:sign', async (req, res) => {
+    const sign = req.params.sign;
     const verifyLaunchParams = require('../../functions/verifyLaunchParams');
     let auth;
-    if(req.headers.authorization){
-      auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
-    }
-    if(!auth) {
-      res.status(401).send({ error: "not authorized :(" });
-      return;
+    // if(req.headers.authorization){
+    //   auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+    // }
+    // if(!auth) {
+    //   res.status(401).send({ error: "not authorized :(" });
+    //   return;
+    // }
+
+    const header = qs.parse(req.headers.authorization);
+    const userId = header.vk_user_id;
+
+    if(!isNumeric(sign)) {
+      res.status(400).send({ error: "Invalid input :(" });
     }
 
-    if (req.body.id !== null) {
-          mongo.users.updateOne({ id: req.body.id }, { $set: {
-            sign: req.body.sign
-          } }).then((data) => console.log(data));
+    if (userId !== null) {
+          const user = await mongo.users.findOneAndUpdate({ id: userId }, { $set: {
+            sign: sign
+          } }, {new: true})
+      res.json(user)
+          //     .then().then((data) => {
+          //   console.log("RES === ", data)
+          //   res.json(data)
+          // });
       }
-
-      const user = await mongo.users.findOne({ id: req.body.id });
-    console.log('user ', user)
-    console.log(req.body.sign)
-    res.json(user);
-
   });
 
 }

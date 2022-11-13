@@ -1,24 +1,31 @@
 const verifyLaunchParams = require("../../functions/verifyLaunchParams");
+const qs = require('qs');
+
 module.exports = (app, mongo) => {
-    app.post('/api/setAdsData', async (req, res) => {
+    app.get('/api/setAdsData', async (req, res) => {
         const verifyLaunchParams = require('../../functions/verifyLaunchParams');
         let auth;
-        if(req.headers.authorization){
-            auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+        // if(req.headers.authorization){
+        //     auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+        // }
+        // if(!auth) {
+        //     res.status(401).send({ error: "not authorized :(" });
+        //     return;
+        // }
+
+        const header = qs.parse(req.headers.authorization);
+        const userId = header.vk_user_id;
+
+        if (userId !== null) {
+            const oldUser = await mongo.users.findOne({ id: userId });
+            const newUser = await mongo.users.findOneAndUpdate(userId, {$set: {
+                countOfAdsPerDay: oldUser.countOfAdsPerDay + 1,
+                        dateOfShowAds: new Date(),
+                        stars: oldUser.stars + 2
+                    }},
+                {new: true});
+            res.json(newUser);
         }
-        if(!auth) {
-            res.status(401).send({ error: "not authorized :(" });
-            return;
-        }
-        if (req.body.id !== null) {
-                    mongo.users.updateOne({ id: req.body.id }, { $set: {
-                            countOfAdsPerDay: req.body.countOfAdsPerDay,
-                            dateOfShowAds: req.body.dateOfShowAds,
-                        } }).then(() => null);
-        }
-        const user = await mongo.users.findOne({ id: req.body.id });
-        console.log('USER ', user)
-        res.json(user);
     });
 
 }
