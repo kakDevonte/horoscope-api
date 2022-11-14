@@ -8,13 +8,13 @@ module.exports = (app, mongo) => {
     app.get('/api/addPushNotice', async (req, res) => {
         const verifyLaunchParams = require('../../functions/verifyLaunchParams');
         let auth;
-        // if(req.headers.authorization){
-        //     auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
-        // }
-        // if(!auth) {
-        //     res.status(401).send({ error: "not authorized :(" });
-        //     return;
-        // }
+        if(req.headers.authorization){
+            auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+        }
+        if(!auth) {
+            res.status(401).send({ error: "not authorized :(" });
+            return;
+        }
 
         const header = qs.parse(req.headers.authorization);
         const userId = header.vk_user_id;
@@ -22,8 +22,11 @@ module.exports = (app, mongo) => {
         let success = false;
         if (userId !== null) {
             let now = new Date();
-            //let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 0, 0, 0);
-            let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds() + 15, 0);
+            let date = new Date(
+                Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0)
+            );
+           // let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 0, 0, 0);
+            //let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds() + 15, 0);
             console.log(date);
             const j = schedule.scheduleJob(date, function(){
                 easyvk({
@@ -56,7 +59,7 @@ module.exports = (app, mongo) => {
         const userId = header.vk_user_id;
 
         if (userId !== null) {
-            const newUser = await mongo.users.findOneAndUpdate(userId, {$set:{
+            const newUser = await mongo.users.findOneAndUpdate({ id: userId }, {$set:{
                     isClickedOnRemindMe: true}}, {new: true});
             res.json(newUser);
         }
