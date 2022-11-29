@@ -10,13 +10,13 @@ module.exports = (app, mongo) => {
     const sign = req.params.sign;
     const verifyLaunchParams = require('../../functions/verifyLaunchParams');
     let auth;
-    // if(req.headers.authorization){
-    //   auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
-    // }
-    // if(!auth) {
-    //   res.status(401).send({ error: "not authorized :(" });
-    //   return;
-    // }
+    if(req.headers.authorization){
+      auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+    }
+    if(!auth) {
+      res.status(401).send({ error: "not authorized :(" });
+      return;
+    }
 
     const header = qs.parse(req.headers.authorization);
     const userId = header.vk_user_id;

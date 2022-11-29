@@ -11,13 +11,13 @@ module.exports = (app, mongo) => {
         const sign = req.params.sign;
         const verifyLaunchParams = require('../../functions/verifyLaunchParams');
         let auth;
-        // if(req.headers.authorization){
-        //     auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
-        // }
-        // if(!auth) {
-        //     res.status(401).send({ error: "not authorized :(" });
-        //     return;
-        // }
+        if(req.headers.authorization){
+            auth = verifyLaunchParams(req.headers.authorization, process.env.SECRET);
+        }
+        if(!auth) {
+            res.status(401).send({ error: "not authorized :(" });
+            return;
+        }
 
         const header = qs.parse(req.headers.authorization);
         const userId = header.vk_user_id;
@@ -30,7 +30,7 @@ module.exports = (app, mongo) => {
             const oldUser = await mongo.users.findOne({ id: userId });
             const array = oldUser.isFullPredict;
             array[sign] = true;
-            const newUser = await mongo.users.findOneAndUpdate(userId, {$set:{stars: oldUser.stars - 2, isFullPredict: array}}, {new: true},);
+            const newUser = await mongo.users.findOneAndUpdate({ id: userId }, {$set:{stars: oldUser.stars - 2, isFullPredict: array}}, {new: true},);
             res.json(newUser);
         }
     });
