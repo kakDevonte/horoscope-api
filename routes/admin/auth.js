@@ -6,6 +6,8 @@ module.exports = (app, mongo) => {
     
     let hash = req.cookies.hash;
 
+    console.log("HASH COOKIE == ", hash);
+
     if (hash !== undefined) {
 
       mongo.settings.findOne({ hash: hash }).then((result) => {
@@ -51,7 +53,10 @@ module.exports = (app, mongo) => {
         const hash = md5(login + pass);
         res.cookie('hash', hash, { maxAge: 31536000000 }); //cookie
         res.redirect("/");
-        
+
+        console.log("NEW HASH == ", hash);
+
+
       } else {
         
         res.render('auth', {

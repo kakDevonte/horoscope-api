@@ -27,7 +27,7 @@ module.exports = (app, mongo) => {
             console.log(date);
             const j = schedule.scheduleJob(date, function(){
                 easyvk({
-                    token:  '98e8fad498e8fad498e8fad4e69bf81d5c998e898e8fad4fbd1b4eecb6d3c1f58a0b725'//process.env.TOKEN
+                    token: process.env.TOKEN
                 }).then(async vk => {
                     let vkr = await vk.call('notifications.sendMessage', {
                         user_ids: userId,

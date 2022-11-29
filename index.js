@@ -25,8 +25,8 @@ const fs = require("fs");
 mongoose().then(async () => {
   await require('./functions/migrations')(mongo);
   // app.listen(process.env.PORT);
-  app.listen(3000, () => { //process.env.PORT
-    console.log(`Server running on port ${3000}`); //process.env.PORT
+  app.listen(process.env.PORT, () => { //process.env.PORT
+    console.log(`Server running on port ${process.env.PORT}`); //process.env.PORT
   });
   require('./routes')(app, mongo);
 }).catch(() => {
