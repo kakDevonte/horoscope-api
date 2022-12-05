@@ -23,7 +23,7 @@ module.exports = (app, mongo) => {
         if (userId !== null) {
             let now = new Date();
             let date = new Date(
-                Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0)
+                Date.UTC(now.getFullYear(), now.getMonth(), now.getDate() + 1, 7, 0, 0)
             );
            // let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 0, 0, 0);
             //let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds() + 15, 0);
